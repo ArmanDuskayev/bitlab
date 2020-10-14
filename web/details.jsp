@@ -12,9 +12,10 @@
         img {
             max-width: 100%;
         }
+
         .btn-link.focus, .btn-link:focus {
-            -webkit-box-shadow: none!important;
-            box-shadow: none!important;
+            -webkit-box-shadow: none !important;
+            box-shadow: none !important;
         }
     </style>
 </head>
@@ -65,22 +66,25 @@
 
             %>
             <div class="jumbotron pb-3 pt-5">
-                <h1><%=hotel.getName()%></h1>
+                <h1><%=hotel.getName()%>
+                </h1>
                 <h3>For <%=hotel.getPrice()%> USD</h3>
                 <h4><%=hotel.getStars()%> stars</h4>
                 <hr class="my-4">
                 <p><%=hotel.getDescription()%>
                 </p>
                 <div class="d-flex w-100 justify-content-between mt-5">
-                    <label style="color: gray; font-size: 14px;">posted by <%=hotel.getAuthor().getFullName()%> at <%=formatter.format(hotel.getAddedDate())%>
+                    <label style="color: gray; font-size: 14px;">posted by <%=hotel.getAuthor().getFullName()%>
+                        at <%=formatter.format(hotel.getAddedDate())%>
                     </label>
                     <%
-                        if (currentUser!=null) {
+                        if (currentUser != null) {
                             if (currentUser.getId() == hotel.getAuthor().getId()) {
                     %>
                     <div class="text-right">
                         <a class="btn btn-primary btn-sm" href="/edithotel?id=<%=hotel.getId()%>" role="button">Edit</a>
-                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal" data-target="#staticBackdrop">
+                        <button type="button" class="btn btn-danger btn-sm" data-toggle="modal"
+                                data-target="#staticBackdrop">
                             Delete
                         </button>
                     </div>
@@ -92,14 +96,15 @@
             </div>
 
             <%
-                if (currentUser!=null) {
+                if (currentUser != null) {
             %>
             <div class="panel" id="addCommentDiv">
                 <div class="panel-body">
                     <form action="/addcomment" method="post">
                         <input type="hidden" name="hotel_id" value="<%=hotel.getId()%>">
                         <h5>Add comment:</h5>
-                        <textarea class="form-control" rows="3" placeholder="Add your comment here" name="comment"></textarea>
+                        <textarea class="form-control" rows="3" placeholder="Add your comment here"
+                                  name="comment"></textarea>
                         <div class="text-right">
                             <button class="btn btn-sm btn-success mt-2" type="submit">Comment</button>
                         </div>
@@ -107,7 +112,7 @@
                 </div>
             </div>
             <%
-                } else {
+            } else {
             %>
             <div class="text-center">
                 Only registered users can add comments, Please <a href="/register">register</a> or <a href="/login">login</a>.
@@ -134,33 +139,36 @@
             <div class="mt-3">
                 <%
                     ArrayList<Comment> comments = (ArrayList<Comment>) request.getAttribute("comments");
-                    if (comments!=null) {
+                    if (comments != null && !comments.isEmpty()) {
                         for (Comment c : comments) {
                 %>
                 <div class="media mt-4">
                     <img src="<%=c.getUser().getPicture()%>" height="50px;" style="border-radius: 50%;" class="mr-3">
                     <div class="media-body">
                         <div class="d-flex w-100 justify-content-between">
-                            <h5 class="mt-0"><%=c.getUser().getFullName()%></h5>
+                            <h5 class="mt-0"><%=c.getUser().getFullName()%>
+                            </h5>
                             <div class="mt-0 mr-0">
-                                <small class="text-muted"><%=formatter.format(c.getAddedDate())%></small>
+                                <small class="text-muted"><%=formatter.format(c.getAddedDate())%>
+                                </small>
                             </div>
                         </div>
                         <%=c.getComment()%>
 
                         <div class="text-right">
                             <%
-                                if (currentUser!=null) {
+                                if (currentUser != null) {
                             %>
                             <form action="/deletecomment" method="post">
                                 <input type="hidden" name="hotel_id" value="<%=hotel.getId()%>">
                                 <input type="hidden" name="user_id" value="<%=c.getUser().getId()%>">
                                 <input type="hidden" name="comment_id" value="<%=c.getId()%>">
-                                <button type="submit" class="btn btn-link"><small class="text-muted">Delete</small></button>
+                                <button type="submit" class="btn btn-link"><small class="text-muted">Delete</small>
+                                </button>
                             </form>
                             <hr class="my-1">
                             <%
-                                } else {
+                            } else {
                             %>
                             <br>
                             <hr class="my-1">
@@ -172,8 +180,8 @@
                     </div>
                 </div>
                 <%
-                        }
-                    } else {
+                    }
+                } else {
                 %>
                 <div class="text-center">No comments here...</div>
                 <%
