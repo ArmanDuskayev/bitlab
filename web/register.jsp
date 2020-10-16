@@ -1,8 +1,11 @@
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="kz.bitlab.hotels.db.Country" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <title>Register</title>
     <%@include file="head.jsp" %>
+    <script type="text/javascript" src="/res/js/jquery-3.5.1.min.js"></script>
 </head>
 <body>
 <%@include file="navbar.jsp" %>
@@ -47,6 +50,19 @@
                 }
             %>
             <%
+                String cityError = request.getParameter("cityerror");
+                if (cityError != null) {
+            %>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Error!</strong> Choose correct city!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <%
+                }
+            %>
+            <%
                 String success = request.getParameter("success");
                 if (success != null) {
             %>
@@ -81,6 +97,26 @@
                            required>
                 </div>
                 <div class="form-group">
+                    <label>COUNTRY : </label>
+                    <select class="form-control" id="country_id">
+                        <option value="0">Select Country</option>
+                        <%
+                            ArrayList<Country> countries = (ArrayList<Country>) request.getAttribute("countries");
+                            if (countries!=null&&!countries.isEmpty()) {
+                                for (Country c : countries) {
+                        %>
+                        <option value="<%=c.getId()%>"><%=c.getName()%></option>
+                        <%
+                                }
+                            }
+                        %>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>CITY : </label>
+                    <select class="form-control" id="city_id" name="city_id"></select>
+                </div>
+                <div class="form-group">
                     <button class="btn btn-success">SIGN UP</button>
                 </div>
             </form>
@@ -88,4 +124,16 @@
     </div>
 </div>
 </body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#country_id").change(function () {
+            countryId = $("#country_id").val();
+            $.post("/ajaxcities", {
+                country_id : countryId
+            }, function (data) {
+                $("#city_id").html(data);
+            })
+        });
+    });
+</script>
 </html>

@@ -9,13 +9,15 @@ public class Comment {
     private User user;
     private String comment;
     private Date addedDate;
+    private Long parentId;
 
-    public Comment(Long id, Hotel hotel, User user, String comment, Date addedDate) {
+    public Comment(Long id, Hotel hotel, User user, String comment, Date addedDate, Long parentId) {
         this.id = id;
         this.hotel = hotel;
         this.user = user;
         this.comment = comment;
         this.addedDate = addedDate;
+        this.parentId = parentId;
     }
 
     public Comment() {
@@ -59,5 +61,13 @@ public class Comment {
 
     public void setAddedDate(Date addedDate) {
         this.addedDate = addedDate;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
     }
 }

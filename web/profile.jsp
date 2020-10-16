@@ -10,8 +10,7 @@
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="/">Home</a></li>
-            <li class="breadcrumb-item active" aria-current="page"><%=currentUser.getFullName()%>
-            </li>
+            <li class="breadcrumb-item active" aria-current="page"><%=currentUser.getFullName()%> from <%=currentUser.getCity().getName() + ", " + currentUser.getCity().getCountry().getName()%></li>
         </ol>
     </nav>
 </div>

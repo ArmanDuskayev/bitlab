@@ -163,7 +163,8 @@
                                 <input type="hidden" name="hotel_id" value="<%=hotel.getId()%>">
                                 <input type="hidden" name="user_id" value="<%=c.getUser().getId()%>">
                                 <input type="hidden" name="comment_id" value="<%=c.getId()%>">
-                                <button type="submit" class="btn btn-link"><small class="text-muted">Delete</small>
+                                <button type="submit" class="btn btn-link">
+                                    <small class="text-muted">Delete</small>
                                 </button>
                             </form>
                             <hr class="my-1">
