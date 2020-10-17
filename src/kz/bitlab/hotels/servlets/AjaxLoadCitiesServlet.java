@@ -1,5 +1,6 @@
 package kz.bitlab.hotels.servlets;
 
+import com.google.gson.Gson;
 import kz.bitlab.hotels.db.City;
 import kz.bitlab.hotels.db.DBManager;
 
@@ -26,6 +27,19 @@ public class AjaxLoadCitiesServlet extends HttpServlet {
             for (City c : cities) {
                 out.print("<option value = '" + c.getId() + "'>" + c.getName() + "</option>");
             }
+        }
+    }
+
+    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        Long id = Long.parseLong(request.getParameter("country_id"));
+        response.setContentType("text/html");
+        PrintWriter out = response.getWriter();
+
+        ArrayList<City> cities = DBManager.getCitiesByCountryId(id);
+
+        if (cities != null && !cities.isEmpty()) {
+            Gson gson = new Gson();
+            out.print(gson.toJson(cities));
         }
     }
 }

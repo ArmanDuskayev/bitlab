@@ -46,17 +46,19 @@ public class DBManager {
 
     public static User getUserByEmail(String email) {
         User user = null;
+
         try {
 
             PreparedStatement statement = connection.prepareStatement("" +
                     "SELECT u.id, u.email, u.password, u.full_name, u.picture, u.city_id, c.name AS cityName, c.country_id, co.name AS countryName, co.code " +
                     "FROM users u " +
                     "INNER JOIN cities c ON c.id = u.city_id " +
-                    "INNER JOIN countries co ON c.country_id = co_id " +
+                    "INNER JOIN countries co ON c.country_id = co.id " +
                     "WHERE u.email = ?");
             statement.setString(1, email);
 
             ResultSet resultSet = statement.executeQuery();
+
             if (resultSet.next()) {
                 user = new User(
                         resultSet.getLong("id"),

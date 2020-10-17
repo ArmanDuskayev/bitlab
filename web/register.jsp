@@ -102,10 +102,11 @@
                         <option value="0">Select Country</option>
                         <%
                             ArrayList<Country> countries = (ArrayList<Country>) request.getAttribute("countries");
-                            if (countries!=null&&!countries.isEmpty()) {
+                            if (countries != null && !countries.isEmpty()) {
                                 for (Country c : countries) {
                         %>
-                        <option value="<%=c.getId()%>"><%=c.getName()%></option>
+                        <option value="<%=c.getId()%>"><%=c.getName()%>
+                        </option>
                         <%
                                 }
                             }
@@ -128,10 +129,16 @@
     $(document).ready(function () {
         $("#country_id").change(function () {
             countryId = $("#country_id").val();
-            $.post("/ajaxcities", {
-                country_id : countryId
+            $.get("/ajaxcities", {
+                country_id: countryId
             }, function (data) {
-                $("#city_id").html(data);
+                citiesArray = JSON.parse(data);
+                console.log(citiesArray);
+                options = "";
+                for (i = 0; i < citiesArray.length; i++) {
+                    options += "<option value='" + citiesArray[i]["id"] + "'>" + citiesArray[i]["name"] + "</option> "
+                }
+                $("#city_id").html(options);
             })
         });
     });
