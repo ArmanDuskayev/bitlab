@@ -20,6 +20,9 @@
 <div class="container mt-3">
     <div class="row">
         <div class="col-sm-12">
+            <div class="alert alert-danger" role="alert" id="alert_id" style="display: none;">
+                <div id="alert_message_id"></div>
+            </div>
             <%
                 String userError = request.getParameter("usererror");
                 String email = request.getParameter("email");
@@ -78,10 +81,10 @@
         </div>
 
         <div class="col-sm-6 offset-3">
-            <form action="/register" method="post">
+            <form action="/register" method="post" id="register_form_id">
                 <div class="form-group">
                     <label>EMAIL : </label>
-                    <input type="email" name="email" class="form-control" value="<%=(email!=null?email:"")%>" required>
+                    <input type="email" name="email" id="email_id" class="form-control" value="<%=(email!=null?email:"")%>" required>
                 </div>
                 <div class="form-group">
                     <label>PASSWORD : </label>
@@ -118,7 +121,7 @@
                     <select class="form-control" id="city_id" name="city_id"></select>
                 </div>
                 <div class="form-group">
-                    <button class="btn btn-success">SIGN UP</button>
+                    <button type="button" class="btn btn-success" id="sign_up_button">SIGN UP</button>
                 </div>
             </form>
         </div>
@@ -139,6 +142,23 @@
                     options += "<option value='" + citiesArray[i]["id"] + "'>" + citiesArray[i]["name"] + "</option> "
                 }
                 $("#city_id").html(options);
+            })
+        });
+        $("#sign_up_button").click(function (){
+            $.get("/ajax_register", {
+
+                user_email : $("#email_id").val()
+
+            }, function (json){
+
+                jsonObj = JSON.parse(json);
+
+                if (jsonObj["status"] == "error"){
+                    $("#alert_id").css("display", "block");
+                    $("#alert_message_id").html(jsonObj["message"]);
+                } else if (jsonObj["status"] == "ok") {
+                    $("#register_form_id").submit();
+                }
             })
         });
     });
