@@ -19,7 +19,7 @@
 <div class="container-flex">
     <div class="container">
         <div class="row mt-3">
-            <div class="col-sm-12">
+            <div class="col-sm-12 mt-2">
                 <%
                     SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy HH:mm");
                     formatter.setTimeZone(TimeZone.getTimeZone("UTC"));

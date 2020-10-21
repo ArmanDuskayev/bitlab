@@ -8,6 +8,7 @@
 <head>
     <title>Details</title>
     <%@include file="head.jsp" %>
+    <script type="text/javascript" src="/res/js/jquery-3.5.1.min.js"></script>
     <style>
         img {
             max-width: 100%;
@@ -100,13 +101,14 @@
             %>
             <div class="panel" id="addCommentDiv">
                 <div class="panel-body">
-                    <form action="/addcomment" method="post">
+                    <form action="/addcomment" method="post" id="add_comment_form">
                         <input type="hidden" name="hotel_id" value="<%=hotel.getId()%>">
+                        <input type="hidden" name="parent_id" id="parent_id" value="0">
                         <h5>Add comment:</h5>
                         <textarea class="form-control" rows="3" placeholder="Add your comment here"
                                   name="comment"></textarea>
                         <div class="text-right">
-                            <button class="btn btn-sm btn-success mt-2" type="submit">Comment</button>
+                            <button class="btn btn-sm btn-success mt-2" type="button" id="add_comment_btn">Send Comment</button>
                         </div>
                     </form>
                 </div>
@@ -223,4 +225,27 @@
     </div>
 </div>
 </body>
+<script type="text/javascript">
+    $(document).ready(function () {
+        $("#add_comment_btn").click(function (){
+            if ($("#parent_id").val() == "0") {
+                $("#parent_id").val("111")
+            }
+
+            $.get("/ajax_register", {
+                user_email : $("#email_id").val()
+            }, function (json){
+                jsonObj = JSON.parse(json);
+                if (jsonObj["status"] == "error"){
+                    $("#alert_id").css("display", "block");
+                    $("#alert_message_id").html(jsonObj["message"]);
+                } else if (jsonObj["status"] == "ok") {
+                    $("#add_comment_form").submit();
+                }
+            })
+
+
+        });
+    });
+</script>
 </html>

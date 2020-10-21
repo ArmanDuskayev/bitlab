@@ -334,7 +334,7 @@ public class DBManager {
                     "FROM comments c " +
                     "INNER JOIN users u ON u.id = c.user_id " +
                     "WHERE c.hotel_id = ? " +
-                    "ORDER BY c.added_date DESC ");
+                    "ORDER BY c.added_date ASC ");
 
             statement.setLong(1, hotelId);
             ResultSet resultSet = statement.executeQuery();

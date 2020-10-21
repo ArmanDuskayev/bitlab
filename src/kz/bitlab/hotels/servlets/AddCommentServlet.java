@@ -29,6 +29,8 @@ public class AddCommentServlet extends HttpServlet {
 
             if (hotel != null) {
 
+                Long parentId = Long.parseLong(request.getParameter("parent_id"));
+
                 String textComment = request.getParameter("comment");
 
                 if (!textComment.trim().equals("")) {
@@ -37,6 +39,7 @@ public class AddCommentServlet extends HttpServlet {
                     comment.setComment(textComment);
                     comment.setUser(currentUser);
                     comment.setHotel(hotel);
+                    comment.setParentId(parentId);
 
                     if (DBManager.addComment(comment)) {
                         response.sendRedirect("/details?id=" + hotel.getId() + "#addCommentDiv");
