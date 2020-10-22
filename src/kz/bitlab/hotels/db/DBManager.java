@@ -187,7 +187,7 @@ public class DBManager {
 
             ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 hotels.add(
                         new Hotel(
                                 resultSet.getLong("id"),
@@ -209,7 +209,7 @@ public class DBManager {
 
             statement.close();
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -230,7 +230,7 @@ public class DBManager {
 
             ResultSet resultSet = statement.executeQuery();
 
-            while (resultSet.next()){
+            while (resultSet.next()) {
                 hotel = new Hotel(
                         resultSet.getLong("id"),
                         resultSet.getString("name"),
@@ -250,7 +250,7 @@ public class DBManager {
 
             statement.close();
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
 
@@ -415,7 +415,7 @@ public class DBManager {
         return countries;
     }
 
-    public static ArrayList<City> getCitiesByCountryId (Long countryId) {
+    public static ArrayList<City> getCitiesByCountryId(Long countryId) {
 
         ArrayList<City> cities = new ArrayList<>();
 
@@ -450,7 +450,7 @@ public class DBManager {
         return cities;
     }
 
-    public static City getCityById (Long cityId) {
+    public static City getCityById(Long cityId) {
 
         City city = null;
 
@@ -488,4 +488,72 @@ public class DBManager {
         return city;
     }
 
+    public static ArrayList<Hotel> searchHotels(String name, int priceFrom, int priceTo, int starsFrom, int starsTo) {
+
+        ArrayList<Hotel> hotels = new ArrayList<>();
+
+        try {
+
+            String priceFromQuery = "";
+            String priceToQuery = "";
+            String starsFromQuery = "";
+            String starsToQuery = "";
+
+
+            if (priceFrom>=0) {
+                priceFromQuery = " AND h.price >= " + priceFrom;
+            }
+
+            if (priceTo>=0) {
+                priceToQuery = " AND h.price <= " + priceTo;
+            }
+
+            if (starsFrom>=0) {
+                starsFromQuery = " AND h.stars >= " + starsFrom;
+            }
+
+            if (starsTo>=0) {
+                starsToQuery = " AND h.stars <= " + starsTo;
+            }
+
+            String sqlQuery = "" +
+                    "SELECT h.id, h.name, h.description, h.added_date, h.price, h.stars, h.author_id, u.full_name, u.picture " +
+                    "FROM hotels h " +
+                    "INNER JOIN users u ON u.id = h.author_id " +
+                    "WHERE h.name LIKE ? " + priceFromQuery + priceToQuery + starsFromQuery + starsToQuery + " " +
+                    "ORDER BY h.price ASC ";
+
+            PreparedStatement statement = connection.prepareStatement(sqlQuery);
+            statement.setString(1, "%" + name + "%");
+
+            ResultSet resultSet = statement.executeQuery();
+
+            while (resultSet.next()) {
+                hotels.add(
+                        new Hotel(
+                                resultSet.getLong("id"),
+                                resultSet.getString("name"),
+                                new User(
+                                        resultSet.getLong("author_id"),
+                                        null, null,
+                                        resultSet.getString("full_name"),
+                                        resultSet.getString("picture"),
+                                        null
+                                ),
+                                resultSet.getInt("stars"),
+                                resultSet.getString("description"),
+                                resultSet.getTimestamp("added_date"),
+                                resultSet.getInt("price")
+                        )
+                );
+            }
+
+            statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return hotels;
+    }
 }
