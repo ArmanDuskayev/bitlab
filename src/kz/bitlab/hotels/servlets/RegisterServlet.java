@@ -4,6 +4,8 @@ import kz.bitlab.hotels.db.City;
 import kz.bitlab.hotels.db.Country;
 import kz.bitlab.hotels.db.DBManager;
 import kz.bitlab.hotels.db.User;
+import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -22,7 +24,7 @@ public class RegisterServlet extends HttpServlet {
         String email = request.getParameter("email");
         String password = request.getParameter("password");
         String rePassword = request.getParameter("re_password");
-        String fullName = request.getParameter("full_name");
+        String fullName = StringEscapeUtils.escapeHtml4(request.getParameter("full_name"));
         Long cityId = 0L;
 
         try {
@@ -42,8 +44,9 @@ public class RegisterServlet extends HttpServlet {
 
                 City city = DBManager.getCityById(cityId);
                 redirect = "/register?cityerror&email=" + (email != null ? email : "") + "&full_name=" + (fullName != null ? fullName : "");
-                System.out.println("test point 3 + " + city);
+
                 if (city!=null) {
+                    password = DigestUtils.sha1Hex(password);
                     User newUser = new User(null, email, password, fullName, "/res/avatars/default_man.jpg", city);
                     DBManager.addUser(newUser);
                     redirect = "/register?success";

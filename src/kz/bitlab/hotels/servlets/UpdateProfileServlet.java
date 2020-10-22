@@ -2,6 +2,7 @@ package kz.bitlab.hotels.servlets;
 
 import kz.bitlab.hotels.db.DBManager;
 import kz.bitlab.hotels.db.User;
+import org.apache.commons.text.StringEscapeUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,7 +18,7 @@ public class UpdateProfileServlet extends HttpServlet {
         if (user!=null) {
             request.setCharacterEncoding("utf8");
             String fullName = request.getParameter("full_name");
-            user.setFullName(fullName);
+            user.setFullName(StringEscapeUtils.escapeHtml4(fullName));
             if (DBManager.updateUserProfile(user)) {
                 request.getSession().setAttribute("USER", user);
             }

@@ -3,6 +3,7 @@ package kz.bitlab.hotels.servlets;
 import com.google.gson.Gson;
 import kz.bitlab.hotels.db.DBManager;
 import kz.bitlab.hotels.db.User;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,7 +28,7 @@ public class AjaxCheckPasswordServlet extends HttpServlet {
         String status = "error";
         String message = "Your current password is not correct!";
 
-        if (user.getPassword().equals(oldPassword)){
+        if (user.getPassword().equals(DigestUtils.sha1Hex(oldPassword))){
             status = "ok";
         }
 

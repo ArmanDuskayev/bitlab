@@ -4,7 +4,7 @@ import kz.bitlab.hotels.db.Comment;
 import kz.bitlab.hotels.db.DBManager;
 import kz.bitlab.hotels.db.Hotel;
 import kz.bitlab.hotels.db.User;
-import org.omg.CORBA.CODESET_INCOMPATIBLE;
+import org.apache.commons.text.StringEscapeUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -36,7 +36,7 @@ public class AddCommentServlet extends HttpServlet {
                 if (!textComment.trim().equals("")) {
 
                     Comment comment = new Comment();
-                    comment.setComment(textComment);
+                    comment.setComment(StringEscapeUtils.escapeHtml4(textComment));
                     comment.setUser(currentUser);
                     comment.setHotel(hotel);
                     comment.setParentId(parentId);

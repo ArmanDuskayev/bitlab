@@ -2,6 +2,7 @@ package kz.bitlab.hotels.servlets;
 
 import kz.bitlab.hotels.db.DBManager;
 import kz.bitlab.hotels.db.User;
+import org.apache.commons.codec.digest.DigestUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -24,7 +25,7 @@ public class LoginServlet extends HttpServlet {
         if (user != null) {
             redirect = "/login?passworderror&email=" + (email != null ? email : "");
 
-            if (user.getPassword().equals(password)) {
+            if (user.getPassword().equals(DigestUtils.sha1Hex(password))) {
                 HttpSession session = request.getSession();
                 session.setAttribute("USER", user);
 

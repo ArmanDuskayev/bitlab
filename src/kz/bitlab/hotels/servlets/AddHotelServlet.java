@@ -3,6 +3,7 @@ package kz.bitlab.hotels.servlets;
 import kz.bitlab.hotels.db.DBManager;
 import kz.bitlab.hotels.db.Hotel;
 import kz.bitlab.hotels.db.User;
+import org.apache.commons.text.StringEscapeUtils;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -21,7 +22,7 @@ public class AddHotelServlet extends HttpServlet {
 
             request.setCharacterEncoding("utf8");
 
-            String name = request.getParameter("name");
+            String name = StringEscapeUtils.escapeHtml4(request.getParameter("name"));
             String description = request.getParameter("description");
             int stars = Integer.parseInt(request.getParameter("stars"));
             int price = Integer.parseInt(request.getParameter("price"));
