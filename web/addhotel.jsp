@@ -6,7 +6,8 @@
     <script type="text/javascript" src="res/js/tinymce/tinymce.min.js"></script>
     <script>
         tinymce.init({
-            selector:'textarea'
+            selector: 'textarea',
+            statusbar: false
         });
     </script>
 </head>

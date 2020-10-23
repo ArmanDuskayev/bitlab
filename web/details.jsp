@@ -9,16 +9,6 @@
     <title>Details</title>
     <%@include file="head.jsp" %>
     <script type="text/javascript" src="/res/js/jquery-3.5.1.min.js"></script>
-    <style>
-        img {
-            max-width: 100%;
-        }
-
-        .btn-link.focus, .btn-link:focus {
-            -webkit-box-shadow: none !important;
-            box-shadow: none !important;
-        }
-    </style>
 </head>
 <body class="mb-5 pb-5">
 <%@include file="navbar.jsp" %>
@@ -160,6 +150,7 @@
                         <div class="text-right">
                             <%
                                 if (currentUser != null) {
+                                    if (currentUser.getId() == c.getUser().getId()) {
                             %>
                             <form action="/deletecomment" method="post">
                                 <input type="hidden" name="hotel_id" value="<%=hotel.getId()%>">
@@ -171,9 +162,15 @@
                             </form>
                             <hr class="my-1">
                             <%
+                                } else {
+                            %>
+                            <br><br>
+                            <hr class="my-1">
+                            <%
+                                }
                             } else {
                             %>
-                            <br>
+                            <br><br>
                             <hr class="my-1">
                             <%
                                 }

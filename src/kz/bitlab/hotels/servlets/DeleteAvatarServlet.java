@@ -10,25 +10,31 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebServlet(value = "/updatepictire")
-public class UpdatePictureServlet extends HttpServlet {
+@WebServlet(value = "/deleteavatar")
+public class DeleteAvatarServlet extends HttpServlet {
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 
         User user = (User) request.getSession().getAttribute("USER");
         String redirect = "/login";
 
-        if (user != null) {
+        if (user!=null) {
 
-            String url = request.getParameter("url");
-            user.setPicture(url);
+            try {
 
-            redirect = "/profile";
+                if (!user.getPicture().equals("/res/avatars/default_man.jpg")) {
 
-            if (DBManager.updateUserPicture(user)) {
+                    user.setPicture("/res/avatars/default_man.jpg");
 
-                request.getSession().setAttribute("USER", user);
-                redirect = "/profile?pictureupdated";
+                    if (DBManager.updateUserPicture(user)) {
 
+                        redirect = "/profile?pictureupdated";
+
+                    }
+
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
         }

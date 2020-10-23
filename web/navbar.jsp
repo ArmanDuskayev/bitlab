@@ -14,7 +14,8 @@
                     <%
                         if (currentUser != null) {
                     %>
-                    <li class="nav-item">
+                    <li class="nav-item" style="display: flex;">
+                        <img src="<%=currentUser.getPicture()%>" alt="Your Avatar" width="40px;" style="border-radius: 50%;">
                         <a class="nav-link" href="/profile"><%=currentUser.getFullName()%></a>
                     </li>
                     <li class="nav-item">
@@ -62,8 +63,8 @@
                     }
                 %>
                 <form class="form-inline my-2 my-lg-0" action="/search" method="get">
-                    <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="key" value="<%=key%>">
-                    <button class="btn btn-outline-dark my-2 my-sm-0">Search</button>
+                    <input class="form-control form-control-sm mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="key" value="<%=key%>">
+                    <button class="btn btn-outline-light btn-sm my-2 my-sm-0">Search</button>
                 </form>
             </div>
         </div>
