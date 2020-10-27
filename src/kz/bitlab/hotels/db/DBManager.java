@@ -180,7 +180,7 @@ public class DBManager {
         try {
 
             PreparedStatement statement = connection.prepareStatement("" +
-                    "SELECT h.id, h.name, h.description, h.added_date, h.price, h.stars, h.author_id, u.full_name, u.picture " +
+                    "SELECT h.id, h.name, h.description, h.added_date, h.price, h.stars, h.author_id, h.likes, u.full_name, u.picture " +
                     "FROM hotels h " +
                     "INNER JOIN users u ON u.id = h.author_id " +
                     "ORDER BY h.price ASC ");
@@ -202,7 +202,8 @@ public class DBManager {
                                 resultSet.getInt("stars"),
                                 resultSet.getString("description"),
                                 resultSet.getTimestamp("added_date"),
-                                resultSet.getInt("price")
+                                resultSet.getInt("price"),
+                                resultSet.getInt("likes")
                         )
                 );
             }
@@ -221,7 +222,7 @@ public class DBManager {
         try {
 
             PreparedStatement statement = connection.prepareStatement("" +
-                    "SELECT h.id, h.name, h.description, h.added_date, h.price, h.stars, h.author_id, u.full_name, u.picture " +
+                    "SELECT h.id, h.name, h.description, h.added_date, h.price, h.stars, h.author_id, h.likes, u.full_name, u.picture " +
                     "FROM hotels h " +
                     "INNER JOIN users u ON u.id = h.author_id " +
                     "WHERE h.id = ?");
@@ -244,7 +245,8 @@ public class DBManager {
                         resultSet.getInt("stars"),
                         resultSet.getString("description"),
                         resultSet.getTimestamp("added_date"),
-                        resultSet.getInt("price")
+                        resultSet.getInt("price"),
+                        resultSet.getInt("likes")
                 );
             }
 
@@ -500,19 +502,19 @@ public class DBManager {
             String starsToQuery = "";
 
 
-            if (priceFrom>=0) {
+            if (priceFrom >= 0) {
                 priceFromQuery = " AND h.price >= " + priceFrom;
             }
 
-            if (priceTo>=0) {
+            if (priceTo >= 0) {
                 priceToQuery = " AND h.price <= " + priceTo;
             }
 
-            if (starsFrom>=0) {
+            if (starsFrom >= 0) {
                 starsFromQuery = " AND h.stars >= " + starsFrom;
             }
 
-            if (starsTo>=0) {
+            if (starsTo >= 0) {
                 starsToQuery = " AND h.stars <= " + starsTo;
             }
 
@@ -555,5 +557,88 @@ public class DBManager {
         }
 
         return hotels;
+    }
+
+    public static int toLikeHotel(Long userId, Long hotelId) {
+
+        int likes = 0;
+        boolean exists = false;
+
+        try {
+
+            PreparedStatement statement = connection.prepareStatement("" +
+                    "SELECT * FROM likes WHERE user_id = ? AND hotel_id = ?");
+
+            statement.setLong(1, userId);
+            statement.setLong(2, hotelId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            exists = resultSet.next();
+
+            statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+
+            String sqlText = "INSERT INTO likes(id, user_id, hotel_id) VALUES(NULL, ?, ?)";
+
+            if (exists) {
+
+                sqlText = "DELETE FROM likes WHERE user_id = ? AND hotel_id = ?";
+
+            }
+
+            PreparedStatement statement = connection.prepareStatement(sqlText);
+
+            statement.setLong(1, userId);
+            statement.setLong(2, hotelId);
+
+            statement.executeUpdate();
+
+            statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+
+            PreparedStatement statement = connection.prepareStatement("" +
+                    "SELECT COUNT(*) likeCount FROM likes WHERE hotel_id = ?");
+
+            statement.setLong(1, hotelId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                likes = resultSet.getInt("likeCount");
+            }
+
+            statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+
+            PreparedStatement statement = connection.prepareStatement("" +
+                    "UPDATE hotels SET likes = ? WHERE id = ?");
+
+            statement.setInt(1, likes);
+            statement.setLong(2, hotelId);
+
+            statement.executeUpdate();
+            statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return likes;
     }
 }

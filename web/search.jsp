@@ -82,6 +82,43 @@
                     <h4>For <%=h.getPrice()%> USD</h4>
                     <h5><%=h.getStars()%> stars</h5>
                     <hr class="my-4">
+
+                    <!-- Likes -->
+
+                    <%
+                        if (currentUser != null) {
+                    %>
+                    <p id="like">
+                        <a href="JavaScript:void(0)" onclick="toLike()"
+                           style="color: #808080; font-size: 16px; text-decoration: none;">
+                            <i class="far fa-heart"></i>
+                            <span id="like_cnt_id"><%=h.getLikes()%></span>
+                        </a>
+                    </p>
+                    <script type="text/javascript">
+                        function toLike() {
+                            $.post("/ajaxlike", {
+                                hotel_id : <%=h.getId()%>
+                            }, function (response) {
+                                if (response!=-1) {
+                                    $("#like_cnt_id").html(response);
+                                }
+                            });
+                        }
+
+                    </script>
+                    <%
+                    } else {
+                    %>
+                    <p id="#like">
+                    <span style="color: #808080; font-size: 16px;">
+                        <i class="far fa-heart"></i>
+                        <%=h.getLikes()%>
+                    </span>
+                    </p>
+                    <%
+                        }
+                    %>
                     <div class="d-flex w-100 justify-content-between">
                         <label style="color: gray; font-size: 14px;">posted by <%=h.getAuthor().getFullName()%> at <%=formatter.format(h.getAddedDate())%></label>
                         <div class="text-right">

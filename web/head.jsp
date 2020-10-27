@@ -6,6 +6,12 @@
 <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 
+<!-- Font Awesome -->
+<link rel="stylesheet" type="text/css" href="res/fontawesome5/css/all.min.css">
+
+<!-- jQuery for Ajax -->
+<script type="text/javascript" src="/res/js/jquery-3.5.1.min.js"></script>
+
 <style>
     img {
         max-width: 100%;
@@ -14,5 +20,9 @@
     .btn-link.focus, .btn-link:focus {
         -webkit-box-shadow: none !important;
         box-shadow: none !important;
+    }
+
+    #like a:hover {
+        color: black;
     }
 </style>

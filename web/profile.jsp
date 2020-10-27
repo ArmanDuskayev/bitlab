@@ -5,7 +5,6 @@
 <head>
     <title>Profile</title>
     <%@include file="head.jsp" %>
-    <script type="text/javascript" src="/res/js/jquery-3.5.1.min.js"></script>
 </head>
 <body class="pb-5 mb-5">
 <%@include file="navbar.jsp" %>

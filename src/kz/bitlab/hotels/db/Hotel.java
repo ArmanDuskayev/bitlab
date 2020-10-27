@@ -11,6 +11,7 @@ public class Hotel {
     private String description;
     private Date addedDate;
     private int price;
+    private int likes;
 
     public Hotel(Long id, String name, User author, int stars, String description, Date addedDate, int price) {
         this.id = id;
@@ -20,6 +21,17 @@ public class Hotel {
         this.description = description;
         this.addedDate = addedDate;
         this.price = price;
+    }
+
+    public Hotel(Long id, String name, User author, int stars, String description, Date addedDate, int price, int likes) {
+        this.id = id;
+        this.name = name;
+        this.author = author;
+        this.stars = stars;
+        this.description = description;
+        this.addedDate = addedDate;
+        this.price = price;
+        this.likes = likes;
     }
 
     public Hotel() {
@@ -79,5 +91,13 @@ public class Hotel {
 
     public void setPrice(int price) {
         this.price = price;
+    }
+
+    public int getLikes() {
+        return likes;
+    }
+
+    public void setLikes(int likes) {
+        this.likes = likes;
     }
 }

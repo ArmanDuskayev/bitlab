@@ -5,7 +5,6 @@
 <head>
     <title>Register</title>
     <%@include file="head.jsp" %>
-    <script type="text/javascript" src="/res/js/jquery-3.5.1.min.js"></script>
 </head>
 <body>
 <%@include file="navbar.jsp" %>

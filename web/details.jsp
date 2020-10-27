@@ -8,7 +8,6 @@
 <head>
     <title>Details</title>
     <%@include file="head.jsp" %>
-    <script type="text/javascript" src="/res/js/jquery-3.5.1.min.js"></script>
 </head>
 <body class="mb-5 pb-5">
 <%@include file="navbar.jsp" %>
@@ -64,7 +63,47 @@
                 <hr class="my-4">
                 <p><%=hotel.getDescription()%>
                 </p>
-                <div class="d-flex w-100 justify-content-between mt-5">
+
+                <!-- Likes -->
+
+                <%
+                    if (currentUser != null) {
+                %>
+                <p id="like">
+                    <a href="JavaScript:void(0)" onclick="toLike()"
+                       style="color: #808080; font-size: 16px; text-decoration: none;">
+                        <i class="far fa-heart"></i>
+                        <span id="like_cnt_id"><%=hotel.getLikes()%></span>
+                    </a>
+                </p>
+                <script type="text/javascript">
+                    function toLike() {
+                        $.post("/ajaxlike", {
+                            hotel_id : <%=hotel.getId()%>
+                        }, function (response) {
+                            if (response!=-1) {
+                                $("#like_cnt_id").html(response);
+                            }
+                        });
+                    }
+
+                </script>
+                <%
+                    } else {
+                %>
+                <p id="#like">
+                    <span style="color: #808080; font-size: 16px;">
+                        <i class="far fa-heart"></i>
+                        <%=hotel.getLikes()%>
+                    </span>
+                </p>
+                <%
+                    }
+                %>
+
+                <!-- Comments -->
+
+                <div class="d-flex w-100 justify-content-between mt-2">
                     <label style="color: gray; font-size: 14px;">posted by <%=hotel.getAuthor().getFullName()%>
                         at <%=formatter.format(hotel.getAddedDate())%>
                     </label>
@@ -98,7 +137,9 @@
                         <textarea class="form-control" rows="3" placeholder="Add your comment here"
                                   name="comment"></textarea>
                         <div class="text-right">
-                            <button class="btn btn-sm btn-success mt-2" type="button" id="add_comment_btn">Send Comment</button>
+                            <button class="btn btn-sm btn-success mt-2" type="button" id="add_comment_btn">Send
+                                Comment
+                            </button>
                         </div>
                     </form>
                 </div>
@@ -162,7 +203,7 @@
                             </form>
                             <hr class="my-1">
                             <%
-                                } else {
+                            } else {
                             %>
                             <br><br>
                             <hr class="my-1">
@@ -224,16 +265,16 @@
 </body>
 <script type="text/javascript">
     $(document).ready(function () {
-        $("#add_comment_btn").click(function (){
+        $("#add_comment_btn").click(function () {
             if ($("#parent_id").val() == "0") {
                 $("#parent_id").val("111")
             }
 
             $.get("/ajax_register", {
-                user_email : $("#email_id").val()
-            }, function (json){
+                user_email: $("#email_id").val()
+            }, function (json) {
                 jsonObj = JSON.parse(json);
-                if (jsonObj["status"] == "error"){
+                if (jsonObj["status"] == "error") {
                     $("#alert_id").css("display", "block");
                     $("#alert_message_id").html(jsonObj["message"]);
                 } else if (jsonObj["status"] == "ok") {
